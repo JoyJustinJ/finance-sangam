@@ -19,6 +19,7 @@ app.use('/api/deposits', require('./routes/deposits'));
 app.use('/api/loans', require('./routes/loans'));
 app.use('/api/community', require('./routes/community'));
 app.use('/api/profile', require('./routes/profile'));
+app.use('/api/admin', require('./routes/admin'));
 
 app.get('/api/health', (req, res) => res.json({ status: 'ok', time: new Date().toISOString() }));
 
