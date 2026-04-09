@@ -53,5 +53,6 @@ export const getCommunity = () => apiClient.get('/community');
 
 // Profile
 export const getProfile = () => apiClient.get('/profile');
+export const updateProfile = (data) => apiClient.put('/profile', data);
 
 export default apiClient;
