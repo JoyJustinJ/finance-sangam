@@ -6,6 +6,7 @@ import Dashboard from './pages/Dashboard';
 import DepositBorrow from './pages/DepositBorrow';
 import Community from './pages/Community';
 import Profile from './pages/Profile';
+import Admin from './pages/Admin';
 import Login from './pages/Login';
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
         <Route path="/deposit" element={<DepositBorrow />} />
         <Route path="/community" element={<Community />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/admin" element={<Admin />} />
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>

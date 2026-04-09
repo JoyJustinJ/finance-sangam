@@ -23,6 +23,15 @@ export default function TopAppBar() {
                 <span className="font-headline font-extrabold text-primary text-lg tracking-tight">Finance Sangam</span>
             </div>
             <div className="flex items-center gap-3">
+                {user.role === 'admin' && (
+                    <button
+                        onClick={() => navigate('/admin')}
+                        className="w-9 h-9 rounded-full bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center text-amber-700 dark:text-amber-400 hover:scale-105 transition-transform"
+                        title="Admin Panel"
+                    >
+                        <span className="material-symbols-outlined text-xl">shield_person</span>
+                    </button>
+                )}
                 <button className="w-9 h-9 rounded-full bg-surface-container-low flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-colors">
                     <span className="material-symbols-outlined text-xl">notifications</span>
                 </button>
