@@ -8,6 +8,10 @@ export default function Profile() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
     const [filter, setFilter] = useState('all');
+    const [showPassModal, setShowPassModal] = useState(false);
+    const [passData, setPassData] = useState({ current: '', new: '', confirm: '' });
+    const [passError, setPassError] = useState('');
+    const [passLoading, setPassLoading] = useState(false);
 
     useEffect(() => {
         getProfile()
@@ -15,6 +19,24 @@ export default function Profile() {
             .catch(err => setError(err.response?.data?.error || 'Failed to load profile'))
             .finally(() => setLoading(false));
     }, []);
+
+    const handlePassChange = async (e) => {
+        e.preventDefault();
+        if (passData.new !== passData.confirm) return setPassError('New passwords do not match');
+        setPassLoading(true);
+        setPassError('');
+        try {
+            const { updateProfile } = await import('../api');
+            await updateProfile({ currentPassword: passData.current, newPassword: passData.new });
+            alert('Password updated successfully!');
+            setShowPassModal(false);
+            setPassData({ current: '', new: '', confirm: '' });
+        } catch (err) {
+            setPassError(err.response?.data?.error || 'Failed to update password');
+        } finally {
+            setPassLoading(false);
+        }
+    };
 
     if (loading) return <div className="flex items-center justify-center py-32 gap-3 text-on-surface-variant"><span className="material-symbols-outlined animate-spin">progress_activity</span>Loading profile...</div>;
     if (error) return <div className="flex items-center justify-center py-32 text-error gap-2"><span className="material-symbols-outlined">error</span>{error}</div>;
@@ -29,7 +51,55 @@ export default function Profile() {
     const storedUser = JSON.parse(localStorage.getItem('fs_user') || '{}');
 
     return (
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 relative">
+            {/* Password Modal */}
+            {showPassModal && (
+                <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in zoom-in duration-300">
+                    <div className="bg-white dark:bg-slate-900 w-full max-w-md rounded-3xl p-8 shadow-2xl">
+                        <div className="flex justify-between items-center mb-6">
+                            <h3 className="text-xl font-bold dark:text-white">Security Update</h3>
+                            <button onClick={() => setShowPassModal(false)} className="material-symbols-outlined text-slate-400 hover:text-red-500 transition-colors">close</button>
+                        </div>
+                        <form onSubmit={handlePassChange} className="space-y-4">
+                            {passError && <div className="p-3 bg-red-100 text-red-600 text-xs rounded-xl font-bold">{passError}</div>}
+                            <div>
+                                <label className="text-[10px] uppercase font-black tracking-widest text-slate-400 mb-1 block px-1">Current Password</label>
+                                <input
+                                    type="password" required
+                                    className="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-xl p-3 dark:text-white focus:ring-2 ring-blue-500 transition-all"
+                                    value={passData.current}
+                                    onChange={e => setPassData({ ...passData, current: e.target.value })}
+                                />
+                            </div>
+                            <div>
+                                <label className="text-[10px] uppercase font-black tracking-widest text-slate-400 mb-1 block px-1">New Password</label>
+                                <input
+                                    type="password" required
+                                    className="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-xl p-3 dark:text-white focus:ring-2 ring-blue-500 transition-all"
+                                    value={passData.new}
+                                    onChange={e => setPassData({ ...passData, new: e.target.value })}
+                                />
+                            </div>
+                            <div>
+                                <label className="text-[10px] uppercase font-black tracking-widest text-slate-400 mb-1 block px-1">Confirm New Password</label>
+                                <input
+                                    type="password" required
+                                    className="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-xl p-3 dark:text-white focus:ring-2 ring-blue-500 transition-all"
+                                    value={passData.confirm}
+                                    onChange={e => setPassData({ ...passData, confirm: e.target.value })}
+                                />
+                            </div>
+                            <button
+                                disabled={passLoading}
+                                className="w-full bg-blue-600 text-white font-bold py-4 rounded-2xl shadow-lg shadow-blue-500/30 active:scale-95 transition-all disabled:opacity-50 mt-4"
+                            >
+                                {passLoading ? 'Verifying...' : 'Save New Password'}
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            )}
+
             {/* Profile Column */}
             <div className="lg:col-span-5 space-y-8">
                 <section className="bg-surface-container-lowest rounded-full p-8 shadow-[0_4px_20px_rgba(0,0,0,0.02)]">
@@ -90,11 +160,11 @@ export default function Profile() {
                 <section className="space-y-3">
                     <h3 className="text-sm font-bold opacity-60 uppercase tracking-[0.2em] px-2 text-on-surface-variant">Account Preferences</h3>
                     {[
-                        { icon: 'lock', title: 'Change Password', desc: 'Update your login credentials' },
+                        { icon: 'lock', title: 'Change Password', desc: 'Update your login credentials', action: () => setShowPassModal(true) },
                         { icon: 'notifications_active', title: 'Notification Preferences', desc: 'Manage alerts and updates' },
                         { icon: 'shield', title: 'Security', desc: '2FA and biometric settings' }
                     ].map((s, i) => (
-                        <button key={i} className="flex items-center justify-between w-full p-5 bg-surface-container-lowest hover:bg-surface-container-low transition-colors rounded-full group shadow-sm">
+                        <button key={i} onClick={s.action} className="flex items-center justify-between w-full p-5 bg-surface-container-lowest hover:bg-surface-container-low transition-colors rounded-full group shadow-sm">
                             <div className="flex items-center gap-4">
                                 <div className="w-12 h-12 rounded-full bg-surface-container-high flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all">
                                     <span className="material-symbols-outlined">{s.icon}</span>
