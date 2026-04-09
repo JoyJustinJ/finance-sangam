@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-lowest": "#ffffff",
+                        "outline": "#73777e",
+                        "tertiary-fixed-dim": "#edbe8b",
+                        "outline-variant": "#c3c6ce",
+                        "on-background": "#191c1d",
+                        "surface": "#f8f9fa",
+                        "surface-dim": "#d9dadb",
+                        "surface-bright": "#f8f9fa",
+                        "primary-fixed-dim": "#aec9ea",
+                        "tertiary-container": "#3e2300",
+                        "error": "#ba1a1a",
+                        "on-error": "#ffffff",
+                        "surface-container-low": "#f3f4f5",
+                        "on-tertiary-fixed-variant": "#604018",
+                        "inverse-surface": "#2e3132",
+                        "on-primary": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "surface-tint": "#46607d",
+                        "surface-container-high": "#e7e8e9",
+                        "surface-variant": "#e1e3e4",
+                        "surface-container-highest": "#e1e3e4",
+                        "inverse-primary": "#aec9ea",
+                        "on-primary-fixed": "#001d35",
+                        "on-secondary-container": "#3f6d38",
+                        "on-secondary-fixed": "#002201",
+                        "on-surface": "#191c1d",
+                        "on-tertiary-fixed": "#2b1700",
+                        "primary-fixed": "#d0e4ff",
+                        "secondary-fixed": "#bcf0ae",
+                        "inverse-on-surface": "#f0f1f2",
+                        "secondary-container": "#b9eeab",
+                        "error-container": "#ffdad6",
+                        "on-primary-fixed-variant": "#2e4964",
+                        "secondary": "#3b6934",
+                        "on-primary-container": "#7893b2",
+                        "on-surface-variant": "#43474d",
+                        "tertiary": "#221100",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-fixed": "#ffddba",
+                        "primary-container": "#0d2b45",
+                        "on-tertiary-container": "#b2885a",
+                        "on-error-container": "#93000a",
+                        "secondary-fixed-dim": "#a1d494",
+                        "surface-container": "#edeeef",
+                        "on-secondary-fixed-variant": "#23501e",
+                        "primary": "#00162a",
+                        "background": "#f8f9fa"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "headline": ["Manrope"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                },
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface font-body min-h-screen pb-24">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-slate-50/80 dark:bg-slate-950/80 backdrop-blur-md">
+<div class="flex justify-between items-center px-6 h-16 w-full max-w-7xl mx-auto">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden bg-surface-container-high flex items-center justify-center">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="close-up portrait of a professional man with friendly expression in soft studio lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCfD9IIlhghXYrktWbo_BpWRrFGZW0b6Vtw0bilStRFk6p1egjx8z_t6GTN5SQ9_FhooZ4cMzTYv3Gl7lyBC8moojbhG_wvYqbifi9oH1kylGJOWdgv23zUJnrxtWMKaxeRBfz63KC-BxT1rpyJE_4GYhIouTweKURVit01BlOdTfyBjTWWp6pEPUpQEMwBuWwwadCZMfexQXQ0WnZN0RvDXJIipAIan5l3hgnhXFwPX0XQGr2PNq7Se_7RZYLUznBU3MHhkNT-7Cg"/>
+</div>
+<span class="text-xl font-bold text-slate-900 dark:text-white font-headline tracking-tight">Finance Sangam</span>
+</div>
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-slate-200/50 dark:hover:bg-slate-800/50 transition-colors active:scale-95 duration-150 text-slate-900 dark:text-slate-50">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+</div>
+</header>
+<main class="pt-24 px-6 max-w-7xl mx-auto">
+<!-- Hero Section: Editorial Asymmetry -->
+<section class="mb-12 grid grid-cols-1 md:grid-cols-12 gap-8 items-end">
+<div class="md:col-span-8">
+<h1 class="font-headline font-extrabold text-4xl md:text-5xl text-on-surface tracking-tight mb-4 leading-tight">
+                    Our Financial <br/><span class="bg-gradient-to-r from-primary to-primary-container bg-clip-text text-transparent">Sanctuary</span>
+</h1>
+<p class="text-on-surface-variant font-body text-lg max-w-xl">
+                    Transparency drives trust. Explore the collective growth of our Sangam through real-time ledger data.
+                </p>
+</div>
+<div class="md:col-span-4 flex justify-start md:justify-end">
+<div class="bg-tertiary-fixed-dim/20 px-4 py-2 rounded-full flex items-center gap-2">
+<span class="material-symbols-outlined text-on-tertiary-fixed-variant" data-icon="verified_user">verified_user</span>
+<span class="text-on-tertiary-fixed-variant font-label text-sm font-semibold">Verified Sangam Elite</span>
+</div>
+</div>
+</section>
+<!-- Bento Grid: Key Metrics -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+<!-- Total Members -->
+<div class="bg-surface-container-low p-8 rounded-full flex flex-col justify-between group hover:bg-surface-container-high transition-colors duration-300">
+<div>
+<span class="material-symbols-outlined text-primary mb-4 block" data-icon="group">group</span>
+<h3 class="text-on-surface-variant font-label text-sm uppercase tracking-widest font-semibold">Total Members</h3>
+</div>
+<div class="mt-8">
+<span class="text-5xl font-headline font-bold text-on-surface">1,248</span>
+<div class="mt-2 flex items-center gap-1 text-secondary font-semibold text-sm">
+<span class="material-symbols-outlined text-xs" data-icon="trending_up">trending_up</span>
+<span>+12% this month</span>
+</div>
+</div>
+</div>
+<!-- Total Pooled Money: Large Feature -->
+<div class="md:col-span-2 bg-primary-container p-8 rounded-full relative overflow-hidden flex flex-col justify-between">
+<div class="absolute top-0 right-0 w-64 h-64 bg-primary/20 rounded-full blur-3xl -mr-20 -mt-20"></div>
+<div class="relative z-10">
+<span class="material-symbols-outlined text-primary-fixed mb-4 block" data-icon="account_balance_wallet">account_balance_wallet</span>
+<h3 class="text-primary-fixed-dim font-label text-sm uppercase tracking-widest font-semibold">Total Pooled Money</h3>
+</div>
+<div class="mt-12 relative z-10 flex flex-col md:flex-row md:items-baseline md:gap-4">
+<span class="text-6xl font-headline font-extrabold text-white tracking-tighter">₹4,28,45,000</span>
+<span class="text-primary-fixed-dim font-body">Circulating Capital</span>
+</div>
+</div>
+</section>
+<!-- Transparency View: Tonal Layering -->
+<section class="mb-16">
+<div class="flex items-center justify-between mb-8">
+<h2 class="font-headline font-bold text-2xl text-on-surface">Transparency Ledger</h2>
+<div class="flex items-center gap-2 text-primary font-medium text-sm cursor-pointer hover:underline">
+<span>Export Audit Log</span>
+<span class="material-symbols-outlined text-sm" data-icon="download">download</span>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-1">
+<!-- Aggregate Deposits -->
+<div class="bg-surface-container-lowest p-8 rounded-l-full md:border-r border-surface-container">
+<h4 class="text-on-surface-variant font-label text-xs font-bold uppercase mb-2">Aggregate Deposits</h4>
+<p class="text-3xl font-headline font-bold text-on-surface">₹5.2 Cr</p>
+<div class="mt-4 w-full bg-surface-container h-1 rounded-full">
+<div class="bg-secondary h-1 rounded-full" style="width: 85%"></div>
+</div>
+</div>
+<!-- Loans Issued -->
+<div class="bg-surface-container-lowest p-8">
+<h4 class="text-on-surface-variant font-label text-xs font-bold uppercase mb-2">Loans Issued</h4>
+<p class="text-3xl font-headline font-bold text-on-surface">₹3.8 Cr</p>
+<div class="mt-4 w-full bg-surface-container h-1 rounded-full">
+<div class="bg-primary h-1 rounded-full" style="width: 65%"></div>
+</div>
+</div>
+<!-- Repayments -->
+<div class="bg-surface-container-lowest p-8 rounded-r-full">
+<h4 class="text-on-surface-variant font-label text-xs font-bold uppercase mb-2">Repayments</h4>
+<p class="text-3xl font-headline font-bold text-on-surface">₹2.1 Cr</p>
+<div class="mt-4 w-full bg-surface-container h-1 rounded-full">
+<div class="bg-tertiary-fixed-dim h-1 rounded-full" style="width: 92%"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Community Members: Breathable List -->
+<section class="mb-24">
+<div class="flex items-center justify-between mb-8">
+<h2 class="font-headline font-bold text-2xl text-on-surface">Member Spotlight</h2>
+<button class="bg-secondary-container text-on-secondary-container px-6 py-2.5 rounded-full font-label font-bold text-sm hover:opacity-90 transition-opacity">
+                    Join Community
+                </button>
+</div>
+<div class="space-y-4">
+<!-- Member Row 1 -->
+<div class="flex items-center justify-between p-4 bg-surface-container-lowest hover:bg-surface-container-low rounded-full transition-all duration-200 cursor-pointer group">
+<div class="flex items-center gap-4">
+<div class="w-14 h-14 rounded-full overflow-hidden border-2 border-white shadow-sm">
+<img alt="Priya Sharma" class="w-full h-full object-cover" data-alt="modern close-up portrait of a professional woman with glasses, smiling warmly with soft depth of field" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBdGWdwLSvcqH-I_NHECFSp_4aT3E9kaiOzfzAZVAaY-rn0WZUMKZ-1l8bskFTYFvvhEHcW4dCd--wMG5tuf5FBKyzd4qsXtTr2nZxWLvSXUWYRmPsFHYgirp39-qjyNldXy4yDWdd7SDdCII3HaCSUAWs5zY-gI7lgNP5aAC8gddfltevYsD5Ld6dOVv-KWoY5IXDUVqlc9Ulw4I_BiKUfblWcv5Ee6oZnFZTsH9_QInFZZWiLsVxu6dffCTce5Zltt8OU0k506Gw"/>
+</div>
+<div>
+<h4 class="font-headline font-bold text-on-surface">Priya Sharma</h4>
+<p class="text-on-surface-variant text-sm font-body">Joined Oct 2023</p>
+</div>
+</div>
+<div class="flex items-center gap-8 px-6">
+<div class="text-right">
+<span class="block font-label text-[10px] uppercase text-on-surface-variant font-bold">Contribution</span>
+<div class="flex items-center gap-1">
+<div class="w-24 h-2 bg-surface-container rounded-full overflow-hidden">
+<div class="bg-gradient-to-r from-secondary to-primary h-full" style="width: 88%"></div>
+</div>
+<span class="text-xs font-bold text-primary">Master</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline-variant group-hover:text-primary transition-colors" data-icon="chevron_right">chevron_right</span>
+</div>
+</div>
+<!-- Member Row 2 -->
+<div class="flex items-center justify-between p-4 bg-surface-container-lowest hover:bg-surface-container-low rounded-full transition-all duration-200 cursor-pointer group">
+<div class="flex items-center gap-4">
+<div class="w-14 h-14 rounded-full overflow-hidden border-2 border-white shadow-sm">
+<img alt="Rahul Verma" class="w-full h-full object-cover" data-alt="minimalist portrait of a young man in a clean white t-shirt looking at camera with confidence" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDN4KSZZTDja-GeTFijvQ5BET1NnOdpbtWsMvFs7hzROy5767cpMJ65tjM1phkGcrOznioFB4k_nFfLp0MazKcpaJzXZHtMhdMy1B99_U3fLYvR5NAAYDyD0xEXh3Rbf5voBihFrEZxDsxvtfQz6uHPWBeiR_wubbdLL5h6t_p0Rh8FW-y3cRLqchP405GVQ8TphiGHRkQli02x74q-Epq5CEfFsV0vR0n6nAb1NmemdQwwA0Anomb6SzEY7jU43DT61HZANBoWlNI"/>
+</div>
+<div>
+<h4 class="font-headline font-bold text-on-surface">Rahul Verma</h4>
+<p class="text-on-surface-variant text-sm font-body">Joined Jan 2024</p>
+</div>
+</div>
+<div class="flex items-center gap-8 px-6">
+<div class="text-right">
+<span class="block font-label text-[10px] uppercase text-on-surface-variant font-bold">Contribution</span>
+<div class="flex items-center gap-1">
+<div class="w-24 h-2 bg-surface-container rounded-full overflow-hidden">
+<div class="bg-gradient-to-r from-secondary to-primary h-full" style="width: 45%"></div>
+</div>
+<span class="text-xs font-bold text-primary">Rising</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline-variant group-hover:text-primary transition-colors" data-icon="chevron_right">chevron_right</span>
+</div>
+</div>
+<!-- Member Row 3 -->
+<div class="flex items-center justify-between p-4 bg-surface-container-lowest hover:bg-surface-container-low rounded-full transition-all duration-200 cursor-pointer group">
+<div class="flex items-center gap-4">
+<div class="w-14 h-14 rounded-full overflow-hidden border-2 border-white shadow-sm">
+<img alt="Sara Khan" class="w-full h-full object-cover" data-alt="sophisticated portrait of a woman with a calm expression, professional attire, soft natural window light" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDrWUpMK2m8pZPju9bZyb3eWguv3wgOU80O7cRdJYID7QTWGbH2d3tJqekZZMhG97bp1Gabmc4pDlBgGmjjgMJ-4m3qhgHjItv4AZDDaRyYt0PBvwDl2bh42JvkXiSqP4cufPvmh6FJlJKSpT5dWZjvqtJjiBff3YLbi-HSOuN5IjrGORw3zIaAY8chOPalj1iX-8b6nQqGe9d2b55fCIpC-RbJlnBcgDNi_QnFdgM9_PHtRyk_b4s0w6RDnSlImlcACjOJAzjyhLY"/>
+</div>
+<div>
+<h4 class="font-headline font-bold text-on-surface">Sara Khan</h4>
+<p class="text-on-surface-variant text-sm font-body">Joined Dec 2023</p>
+</div>
+</div>
+<div class="flex items-center gap-8 px-6">
+<div class="text-right">
+<span class="block font-label text-[10px] uppercase text-on-surface-variant font-bold">Contribution</span>
+<div class="flex items-center gap-1">
+<div class="w-24 h-2 bg-surface-container rounded-full overflow-hidden">
+<div class="bg-gradient-to-r from-secondary to-primary h-full" style="width: 72%"></div>
+</div>
+<span class="text-xs font-bold text-primary">Core</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline-variant group-hover:text-primary transition-colors" data-icon="chevron_right">chevron_right</span>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 py-3 pb-safe bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl shadow-[0_-4px_20px_rgba(0,0,0,0.05)] z-50 rounded-t-xl">
+<!-- Dashboard -->
+<a class="flex flex-col items-center justify-center text-slate-500 dark:text-slate-400 px-5 py-1.5 hover:text-blue-800 dark:hover:text-blue-300 active:scale-90 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-inter text-[11px] font-medium mt-1">Dashboard</span>
+</a>
+<!-- Community (Active) -->
+<a class="flex flex-col items-center justify-center bg-blue-100 dark:bg-blue-900/40 text-blue-900 dark:text-blue-100 rounded-2xl px-5 py-1.5 active:scale-90 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="group" style="font-variation-settings: 'FILL' 1;">group</span>
+<span class="font-inter text-[11px] font-medium mt-1">Community</span>
+</a>
+<!-- Payments -->
+<a class="flex flex-col items-center justify-center text-slate-500 dark:text-slate-400 px-5 py-1.5 hover:text-blue-800 dark:hover:text-blue-300 active:scale-90 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="swap_horiz">swap_horiz</span>
+<span class="font-inter text-[11px] font-medium mt-1">Payments</span>
+</a>
+<!-- Profile -->
+<a class="flex flex-col items-center justify-center text-slate-500 dark:text-slate-400 px-5 py-1.5 hover:text-blue-800 dark:hover:text-blue-300 active:scale-90 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-inter text-[11px] font-medium mt-1">Profile</span>
+</a>
+</nav>
+</body></html>

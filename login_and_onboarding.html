@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Finance Sangam - Secure Financial Sanctuary</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-lowest": "#ffffff",
+                        "outline": "#73777e",
+                        "tertiary-fixed-dim": "#edbe8b",
+                        "outline-variant": "#c3c6ce",
+                        "on-background": "#191c1d",
+                        "surface": "#f8f9fa",
+                        "surface-dim": "#d9dadb",
+                        "surface-bright": "#f8f9fa",
+                        "primary-fixed-dim": "#aec9ea",
+                        "tertiary-container": "#3e2300",
+                        "error": "#ba1a1a",
+                        "on-error": "#ffffff",
+                        "surface-container-low": "#f3f4f5",
+                        "on-tertiary-fixed-variant": "#604018",
+                        "inverse-surface": "#2e3132",
+                        "on-primary": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "surface-tint": "#46607d",
+                        "surface-container-high": "#e7e8e9",
+                        "surface-variant": "#e1e3e4",
+                        "surface-container-highest": "#e1e3e4",
+                        "inverse-primary": "#aec9ea",
+                        "on-primary-fixed": "#001d35",
+                        "on-secondary-container": "#3f6d38",
+                        "on-secondary-fixed": "#002201",
+                        "on-surface": "#191c1d",
+                        "on-tertiary-fixed": "#2b1700",
+                        "primary-fixed": "#d0e4ff",
+                        "secondary-fixed": "#bcf0ae",
+                        "inverse-on-surface": "#f0f1f2",
+                        "secondary-container": "#b9eeab",
+                        "error-container": "#ffdad6",
+                        "on-primary-fixed-variant": "#2e4964",
+                        "secondary": "#3b6934",
+                        "on-primary-container": "#7893b2",
+                        "on-surface-variant": "#43474d",
+                        "tertiary": "#221100",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-fixed": "#ffddba",
+                        "primary-container": "#0d2b45",
+                        "on-tertiary-container": "#b2885a",
+                        "on-error-container": "#93000a",
+                        "secondary-fixed-dim": "#a1d494",
+                        "surface-container": "#edeeef",
+                        "on-secondary-fixed-variant": "#23501e",
+                        "primary": "#00162a",
+                        "background": "#f8f9fa"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "headline": ["Manrope"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .glass-header {
+            background: rgba(248, 249, 250, 0.8);
+            backdrop-filter: blur(20px);
+        }
+        .signature-gradient {
+            background: linear-gradient(135deg, #00162a 0%, #0d2b45 100%);
+        }
+        .asymmetric-canvas {
+            grid-template-columns: 1.2fr 1fr;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface font-body text-on-surface min-h-screen">
+<!-- TopAppBar suppressed due to Transactional Page Rule -->
+<main class="min-h-screen flex items-center justify-center p-6 md:p-12">
+<div class="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+<!-- Branding & Value Proposition (The Editorial Voice) -->
+<div class="space-y-8 lg:pr-16">
+<div class="space-y-4">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container text-sm font-medium">
+<span class="material-symbols-outlined text-sm" data-icon="verified_user">verified_user</span>
+                        Member-Driven Finance
+                    </div>
+<h1 class="font-headline text-5xl md:text-6xl font-extrabold tracking-tight text-primary leading-tight">
+                        Finance Sangam
+                    </h1>
+<p class="font-body text-xl text-on-surface-variant max-w-md leading-relaxed">
+                        Secure community-based saving and borrowing. Curating wealth through trust and collective growth.
+                    </p>
+</div>
+<!-- Trust Indicators (Intentional Asymmetry) -->
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-4">
+<div class="p-6 rounded-full bg-surface-container-low space-y-2">
+<h3 class="font-headline font-bold text-primary text-2xl">4.8/5</h3>
+<p class="text-sm text-on-surface-variant font-medium">Community Rating</p>
+</div>
+<div class="p-6 rounded-full bg-tertiary-fixed text-tertiary space-y-2">
+<h3 class="font-headline font-bold text-2xl">100k+</h3>
+<p class="text-sm font-medium opacity-80">Trusted Members</p>
+</div>
+</div>
+<!-- Decorative Image Layer (Ambient Light Physics) -->
+<div class="relative mt-8 hidden lg:block h-64 rounded-full overflow-hidden bg-surface-container-highest">
+<img alt="Abstract visual representation" class="w-full h-full object-cover mix-blend-overlay opacity-60" data-alt="Modern minimalist office interior with floor to ceiling windows, soft natural sunlight casting long shadows on oak floors, calm professional atmosphere" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDaZ_AHNuD7aastMe-XRs2BnPmyJZ-2QeryppZ4k_hzIeW0TvttlioIRsAe0uIwUuIo2PCntpR_mWmsPQ1oU9sAZSwqMNCGDBfk89m0XUsfYQoj9t-mHtQu7xklv34-RPX2vKaQQDlJcixLdI508hZhilZQ3IJU1P_KtZNVeyHdj_7YiB8ZbVNoup3prb49IKBVjxSI4YgVztaRqnO3lAXje8ELkuVlUgOm99QqsBoc0gj5u7eRS__2UDApvwGNUGX88uFCRaKU0OU"/>
+<div class="absolute inset-0 signature-gradient opacity-10"></div>
+</div>
+</div>
+<!-- Login Form (The Financial Sanctuary Card) -->
+<div class="bg-surface-container-lowest p-8 md:p-12 rounded-xl shadow-[0_40px_80px_rgba(25,28,29,0.06)] border border-outline-variant/10">
+<div class="mb-10">
+<h2 class="font-headline text-3xl font-bold text-on-surface mb-2">Welcome Back</h2>
+<p class="text-on-surface-variant">Continue your journey to financial stability.</p>
+</div>
+<form class="space-y-6">
+<div class="space-y-2">
+<label class="block font-label text-sm font-medium text-on-surface-variant ml-1" for="phone">Phone Number</label>
+<div class="relative">
+<span class="absolute left-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-outline" data-icon="phone">phone</span>
+<input class="w-full pl-12 pr-4 py-4 bg-surface-container-high rounded-md border-none focus:ring-2 focus:ring-primary-container transition-all placeholder:text-outline-variant" id="phone" placeholder="98765 43210" type="tel"/>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between items-center px-1">
+<label class="block font-label text-sm font-medium text-on-surface-variant" for="password">Password</label>
+<a class="text-sm font-medium text-primary hover:underline decoration-primary-container underline-offset-4" href="#">Forgot Password?</a>
+</div>
+<div class="relative">
+<span class="absolute left-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-outline" data-icon="lock">lock</span>
+<input class="w-full pl-12 pr-12 py-4 bg-surface-container-high rounded-md border-none focus:ring-2 focus:ring-primary-container transition-all placeholder:text-outline-variant" id="password" placeholder="••••••••" type="password"/>
+<button class="absolute right-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-outline hover:text-primary transition-colors" data-icon="visibility" type="button">visibility</button>
+</div>
+</div>
+<div class="flex items-center gap-3 py-2">
+<input class="w-5 h-5 rounded border-outline-variant text-primary focus:ring-primary-container" id="remember" type="checkbox"/>
+<label class="text-sm text-on-surface-variant" for="remember">Remember this device for 30 days</label>
+</div>
+<button class="w-full py-4 rounded-md signature-gradient text-on-primary font-bold text-lg shadow-xl shadow-primary/10 active:scale-[0.98] transition-transform" type="submit">
+                        Login
+                    </button>
+</form>
+<div class="mt-10 pt-8 border-t border-outline-variant/10 text-center">
+<p class="text-on-surface-variant">
+                        New to Sangam? 
+                        <a class="ml-1 font-bold text-primary hover:text-primary-container transition-colors" href="#">Sign Up</a>
+</p>
+</div>
+<!-- Trust Badge (The Trust Meter Influence) -->
+<div class="mt-8 flex justify-center items-center gap-4 opacity-60">
+<div class="h-[1px] w-12 bg-outline-variant"></div>
+<span class="text-[10px] uppercase tracking-widest font-bold text-outline">PCI-DSS Compliant</span>
+<div class="h-[1px] w-12 bg-outline-variant"></div>
+</div>
+</div>
+</div>
+</main>
+<!-- Content-driven Onboarding Section (The Digital Curator) -->
+<section class="max-w-7xl mx-auto px-6 py-24">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<div class="p-8 bg-surface-container-low rounded-full space-y-4">
+<div class="w-12 h-12 rounded-full bg-secondary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-on-secondary-container" data-icon="group">group</span>
+</div>
+<h3 class="font-headline font-bold text-xl text-primary">Collective Savings</h3>
+<p class="text-on-surface-variant leading-relaxed">Join verified local circles to save together with higher returns than traditional banks.</p>
+</div>
+<div class="p-8 bg-surface-container-low rounded-full space-y-4">
+<div class="w-12 h-12 rounded-full bg-primary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary-fixed" data-icon="speed">speed</span>
+</div>
+<h3 class="font-headline font-bold text-xl text-primary">Instant Credit</h3>
+<p class="text-on-surface-variant leading-relaxed">Access emergency funds through community-backed borrowing with minimal paperwork.</p>
+</div>
+<div class="p-8 bg-surface-container-low rounded-full space-y-4">
+<div class="w-12 h-12 rounded-full bg-tertiary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined text-on-tertiary-fixed" data-icon="shield">shield</span>
+</div>
+<h3 class="font-headline font-bold text-xl text-primary">Heritage Security</h3>
+<p class="text-on-surface-variant leading-relaxed">Blending age-old community trust with state-of-the-art encryption for your peace of mind.</p>
+</div>
+</div>
+</section>
+<!-- BottomNavBar suppressed due to Transactional Page Rule -->
+</body></html>

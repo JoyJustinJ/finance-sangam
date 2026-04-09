@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Finance Sangam - Deposit &amp; Borrow</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-lowest": "#ffffff",
+                        "outline": "#73777e",
+                        "tertiary-fixed-dim": "#edbe8b",
+                        "outline-variant": "#c3c6ce",
+                        "on-background": "#191c1d",
+                        "surface": "#f8f9fa",
+                        "surface-dim": "#d9dadb",
+                        "surface-bright": "#f8f9fa",
+                        "primary-fixed-dim": "#aec9ea",
+                        "tertiary-container": "#3e2300",
+                        "error": "#ba1a1a",
+                        "on-error": "#ffffff",
+                        "surface-container-low": "#f3f4f5",
+                        "on-tertiary-fixed-variant": "#604018",
+                        "inverse-surface": "#2e3132",
+                        "on-primary": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "surface-tint": "#46607d",
+                        "surface-container-high": "#e7e8e9",
+                        "surface-variant": "#e1e3e4",
+                        "surface-container-highest": "#e1e3e4",
+                        "inverse-primary": "#aec9ea",
+                        "on-primary-fixed": "#001d35",
+                        "on-secondary-container": "#3f6d38",
+                        "on-secondary-fixed": "#002201",
+                        "on-surface": "#191c1d",
+                        "on-tertiary-fixed": "#2b1700",
+                        "primary-fixed": "#d0e4ff",
+                        "secondary-fixed": "#bcf0ae",
+                        "inverse-on-surface": "#f0f1f2",
+                        "secondary-container": "#b9eeab",
+                        "error-container": "#ffdad6",
+                        "on-primary-fixed-variant": "#2e4964",
+                        "secondary": "#3b6934",
+                        "on-primary-container": "#7893b2",
+                        "on-surface-variant": "#43474d",
+                        "tertiary": "#221100",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-fixed": "#ffddba",
+                        "primary-container": "#0d2b45",
+                        "on-tertiary-container": "#b2885a",
+                        "on-error-container": "#93000a",
+                        "secondary-fixed-dim": "#a1d494",
+                        "surface-container": "#edeeef",
+                        "on-secondary-fixed-variant": "#23501e",
+                        "primary": "#00162a",
+                        "background": "#f8f9fa"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "headline": ["Manrope"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .font-headline { font-family: 'Manrope', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .custom-glass {
+            background: rgba(248, 249, 250, 0.8);
+            backdrop-filter: blur(20px);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface min-h-screen pb-24">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-slate-50/80 dark:bg-slate-950/80 backdrop-blur-md">
+<div class="flex justify-between items-center px-6 h-16 w-full max-w-7xl mx-auto">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden bg-surface-container-high flex items-center justify-center">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="Portrait of a professional young man in a business casual outfit with a friendly smile, studio lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAKVN_sAjekpv4fyZRBIm70355ipOYBsuArlXobpKWAQ6nJzkEVXAseNHFnuqct3prm6Y9PWW-UCM1pGfy9uDNnvvQFhzrURS71t3XIPlRZikOQQx1QfBsziNiaGo2RjLBezE9CGXLcCU95XQYnegF1-fpvQi9Prwz8JSxqEiHk5mzX0Evp8L1Ah-GdfRbGTxvUQPXQaaLW-HRlm-V9cZTJA8KFWMemjddEr6nGnzGP5B9rsJdghk0bb5ZMq1LDpPQmbFBoMXwyZGg"/>
+</div>
+<h1 class="text-xl font-bold text-slate-900 dark:text-white font-headline tracking-tight">Finance Sangam</h1>
+</div>
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-slate-200/50 transition-colors active:scale-95 duration-150">
+<span class="material-symbols-outlined text-slate-900 dark:text-slate-50">notifications</span>
+</button>
+</div>
+</header>
+<main class="pt-20 px-6 max-w-lg mx-auto">
+<!-- Editorial Header Section -->
+<section class="mt-8 mb-10">
+<h2 class="text-4xl font-headline font-extrabold text-primary leading-tight tracking-tighter">
+                Manage Your <br/><span class="text-on-primary-container">Capital.</span>
+</h2>
+<p class="text-on-surface-variant font-body mt-2 leading-relaxed">Secure and community-backed financial growth.</p>
+</section>
+<!-- Signature Component: Trust Meter -->
+<div class="mb-10 p-6 bg-surface-container-lowest rounded-full shadow-[0_4px_20px_rgba(0,0,0,0.03)] flex items-center gap-4">
+<div class="flex-1">
+<div class="flex justify-between items-end mb-2">
+<span class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Trust Score</span>
+<span class="text-sm font-headline font-bold text-secondary">840 / 1000</span>
+</div>
+<div class="h-1.5 w-full bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full w-[84%] bg-gradient-to-r from-secondary to-primary rounded-full"></div>
+</div>
+</div>
+<div class="bg-secondary-container p-2 rounded-full">
+<span class="material-symbols-outlined text-on-secondary-container text-lg">verified</span>
+</div>
+</div>
+<!-- Intentional Asymmetry: Tabs -->
+<div class="flex gap-4 mb-8">
+<button class="px-8 py-3 bg-primary text-on-primary font-headline font-bold rounded-full transition-all shadow-md" id="deposit-tab">
+                Deposit
+            </button>
+<button class="px-8 py-3 text-on-surface-variant font-headline font-semibold rounded-full hover:bg-surface-container-low transition-all" id="borrow-tab">
+                Borrow
+            </button>
+</div>
+<!-- Deposit Canvas (Active by default) -->
+<div class="space-y-6" id="deposit-view">
+<!-- Balance Preview Card -->
+<div class="bg-surface-container-low p-8 rounded-xl relative overflow-hidden">
+<div class="absolute -right-4 -top-4 w-24 h-24 bg-primary-container opacity-5 rounded-full"></div>
+<p class="text-xs font-bold text-on-surface-variant uppercase tracking-widest mb-1">Available Balance</p>
+<h3 class="text-3xl font-headline font-extrabold text-primary">₹48,250.00</h3>
+</div>
+<!-- Input Field Group -->
+<div class="space-y-4">
+<div class="group">
+<label class="block text-[11px] font-semibold font-label text-on-surface-variant mb-2 ml-1">DEPOSIT AMOUNT</label>
+<div class="relative">
+<span class="absolute left-4 top-1/2 -translate-y-1/2 text-primary font-bold">₹</span>
+<input class="w-full bg-surface-container-high border-none rounded-md py-4 pl-8 pr-4 focus:ring-2 focus:ring-primary/20 text-lg font-headline font-bold placeholder:text-on-surface-variant/30" placeholder="0.00" type="number"/>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<button class="bg-surface-container-lowest p-4 rounded-md flex items-center justify-center gap-3 shadow-[0_4px_12px_rgba(0,0,0,0.02)] active:scale-95 transition-all">
+<img alt="GPay" class="w-6 h-6 object-contain grayscale" data-alt="Official Google Pay logo icon in flat vector style, minimalist color version" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBegIXA5SyQL_iKsCI_xxU0-vjUe47odTXeZM4LL2A6mAEPOy0z1EmwMrJtglVw-LmCJov4P3R3VnCLiPm6q9li595hiFmRQVr5MN_rzQaA2IyG1_Mb6EdRFjW1Oaj_y2Qaq2--ocaCJXgH9fV8yRIaYMtPpSvsRvzK__wH4h8YZ93MslbvJIdzFonxx575lU1yRQKiTCJG6mMCGdIPKYOgCmgrBQUzSe-9tIE98SX6-H20BBILFwY3wleCY07pZtJkGezhxGKsY9I"/>
+<span class="font-bold text-sm text-on-surface">GPay</span>
+</button>
+<button class="bg-surface-container-lowest p-4 rounded-md flex items-center justify-center gap-3 shadow-[0_4px_12px_rgba(0,0,0,0.02)] active:scale-95 transition-all">
+<img alt="UPI" class="w-6 h-6 object-contain grayscale" data-alt="Official Unified Payments Interface UPI logo icon in flat vector style" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCgO702Qt87KqgJIA7-LxJdeizr7DCkSb4-vpyE0zI7plK8xKPJOikf-Q69NsH32NHrtuFksuMabLOuvAR9dgJ-KNR6DYpiyK0GhTfAbHHCilJ1LJJaeKZ1VAXTuk6tpcCdR0_9cLPtLNHi0arHjsTInQY57bjkDnm5bJJp41fWZIG-bN5okSHwzyQUpD56m8HlHt1_MELdQDUI7Arnk5Utkkx6zYsmhfj_JV7FIYmPXCnS1QZHiHW_KWh4w3v2Dp2dZitS2EemcXo"/>
+<span class="font-bold text-sm text-on-surface">UPI ID</span>
+</button>
+</div>
+</div>
+<!-- Primary CTA -->
+<button class="w-full bg-gradient-to-r from-primary to-primary-container text-on-primary py-5 rounded-md font-headline font-extrabold text-lg shadow-lg active:scale-95 transition-transform">
+                Confirm Deposit
+            </button>
+</div>
+<!-- Borrow View (Hidden for now, logic-wise) -->
+<div class="hidden space-y-6" id="borrow-view">
+<div class="bg-surface-container-low p-8 rounded-xl">
+<div class="flex justify-between items-start mb-6">
+<div>
+<p class="text-xs font-bold text-on-surface-variant uppercase tracking-widest mb-1">Max Eligibility</p>
+<h3 class="text-3xl font-headline font-extrabold text-primary">₹2,50,000</h3>
+</div>
+<span class="bg-tertiary-fixed-dim text-on-tertiary-fixed-variant text-[10px] px-3 py-1 rounded-full font-bold uppercase tracking-wider">Premium Member</span>
+</div>
+<div class="grid grid-cols-2 gap-8 border-t border-outline-variant/20 pt-6">
+<div>
+<p class="text-[10px] text-on-surface-variant uppercase font-bold tracking-widest">Interest Rate</p>
+<p class="text-lg font-headline font-extrabold text-secondary">8.5% p.a.</p>
+</div>
+<div>
+<p class="text-[10px] text-on-surface-variant uppercase font-bold tracking-widest">Repayment</p>
+<p class="text-lg font-headline font-extrabold text-primary">12 Months</p>
+</div>
+</div>
+</div>
+<div class="group">
+<label class="block text-[11px] font-semibold font-label text-on-surface-variant mb-2 ml-1">LOAN AMOUNT</label>
+<div class="relative">
+<span class="absolute left-4 top-1/2 -translate-y-1/2 text-primary font-bold">₹</span>
+<input class="w-full bg-surface-container-high border-none rounded-md py-4 pl-8 pr-4 focus:ring-2 focus:ring-primary/20 text-lg font-headline font-bold" placeholder="Enter amount to borrow" type="number"/>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-xl space-y-4">
+<div class="flex justify-between items-center">
+<span class="text-sm text-on-surface-variant font-medium">Monthly Installment</span>
+<span class="font-headline font-bold text-primary">₹12,450.00</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-sm text-on-surface-variant font-medium">Processing Fee (2%)</span>
+<span class="font-headline font-bold text-primary">₹2,500.00</span>
+</div>
+</div>
+<button class="w-full bg-gradient-to-r from-primary to-primary-container text-on-primary py-5 rounded-md font-headline font-extrabold text-lg shadow-lg">
+                Request Loan
+            </button>
+</div>
+<!-- Community Insight Card -->
+<div class="mt-12 p-6 bg-surface-variant/40 backdrop-blur-md rounded-full border border-white/10 flex items-center gap-4">
+<div class="w-10 h-10 flex-shrink-0 bg-secondary rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-on-secondary" style="font-variation-settings: 'FILL' 1;">group</span>
+</div>
+<div>
+<p class="text-xs text-on-surface-variant leading-tight">
+<span class="font-bold text-primary">14 people</span> from your community recently deposited.
+                </p>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl flex justify-around items-center px-4 py-3 pb-safe z-50 rounded-t-xl shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
+<a class="flex flex-col items-center justify-center text-slate-500 dark:text-slate-400 px-5 py-1.5 hover:text-blue-800 transition-colors active:scale-90" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-inter text-[11px] font-medium mt-1">Dashboard</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-500 dark:text-slate-400 px-5 py-1.5 hover:text-blue-800 transition-colors active:scale-90" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="font-inter text-[11px] font-medium mt-1">Community</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-blue-100 dark:bg-blue-900/40 text-blue-900 dark:text-blue-100 rounded-2xl px-5 py-1.5 active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">swap_horiz</span>
+<span class="font-inter text-[11px] font-medium mt-1">Payments</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-500 dark:text-slate-400 px-5 py-1.5 hover:text-blue-800 transition-colors active:scale-90" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-inter text-[11px] font-medium mt-1">Profile</span>
+</a>
+</nav>
+<script>
+        // Simple tab switching logic without heavy frameworks
+        const depositTab = document.getElementById('deposit-tab');
+        const borrowTab = document.getElementById('borrow-tab');
+        const depositView = document.getElementById('deposit-view');
+        const borrowView = document.getElementById('borrow-view');
+
+        depositTab.addEventListener('click', () => {
+            depositView.classList.remove('hidden');
+            borrowView.classList.add('hidden');
+            depositTab.classList.add('bg-primary', 'text-on-primary', 'shadow-md');
+            depositTab.classList.remove('text-on-surface-variant');
+            borrowTab.classList.remove('bg-primary', 'text-on-primary', 'shadow-md');
+            borrowTab.classList.add('text-on-surface-variant');
+        });
+
+        borrowTab.addEventListener('click', () => {
+            borrowView.classList.remove('hidden');
+            depositView.classList.add('hidden');
+            borrowTab.classList.add('bg-primary', 'text-on-primary', 'shadow-md');
+            borrowTab.classList.remove('text-on-surface-variant');
+            depositTab.classList.remove('bg-primary', 'text-on-primary', 'shadow-md');
+            depositTab.classList.add('text-on-surface-variant');
+        });
+    </script>
+</body></html>
