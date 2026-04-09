@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getProfile } from '../api';
+import { getProfile, updateProfile } from '../api';
 
 const fmt = (n) => `₹${Number(n || 0).toLocaleString('en-IN')}`;
 
@@ -26,13 +26,14 @@ export default function Profile() {
         setPassLoading(true);
         setPassError('');
         try {
-            const { updateProfile } = await import('../api');
             await updateProfile({ currentPassword: passData.current, newPassword: passData.new });
             alert('Password updated successfully!');
             setShowPassModal(false);
             setPassData({ current: '', new: '', confirm: '' });
         } catch (err) {
-            setPassError(err.response?.data?.error || 'Failed to update password');
+            console.error(err);
+            const msg = err.response?.data?.error || err.message || 'Connection error';
+            setPassError(msg);
         } finally {
             setPassLoading(false);
         }
