@@ -147,9 +147,9 @@ export default function Login() {
                                 <button
                                     type="submit"
                                     disabled={loading || otp.length < 6}
-                                    className="w-full py-4 rounded-md bg-gradient-to-r from-secondary to-secondary-container text-on-secondary font-bold text-lg shadow-xl active:scale-[0.98] transition-transform disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                                    className="w-full py-4 rounded-md bg-gradient-to-r from-secondary to-secondary-container text-on-secondary font-bold text-lg shadow-xl active:scale-[0.98] transition-transform disabled:opacity-60 disabled:cursor-not-allowed"
                                 >
-                                    {loading ? <><span className="material-symbols-outlined animate-spin text-xl">progress_activity</span>Verifying...</> : 'Confirm Identity'}
+                                    {loading ? 'Verifying...' : 'Confirm Identity'}
                                 </button>
                             </form>
                             <button onClick={() => { setTwoFactorRequired(false); setError(''); }} className="mt-6 w-full text-center text-sm text-on-surface-variant hover:text-primary transition-colors">
@@ -174,9 +174,8 @@ export default function Login() {
                                 <div className="space-y-2">
                                     <label className="block text-sm font-medium text-on-surface-variant ml-1" htmlFor="phone">Phone Number</label>
                                     <div className="relative">
-                                        <span className="absolute left-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-outline">phone</span>
                                         <input id="phone" type="tel" value={phone} onChange={(e) => setPhone(e.target.value)}
-                                            className="w-full pl-12 pr-4 py-4 bg-surface-container-high rounded-md border-none focus:ring-2 focus:ring-primary/20 outline-none transition-all placeholder:text-outline-variant"
+                                            className="w-full px-4 py-4 bg-surface-container-high rounded-md border-none focus:ring-2 focus:ring-primary/20 outline-none transition-all placeholder:text-outline-variant"
                                             placeholder="98765 43210" required />
                                     </div>
                                 </div>
@@ -186,9 +185,8 @@ export default function Login() {
                                         <a className="text-sm font-medium text-primary hover:underline underline-offset-4" href="#">Forgot Password?</a>
                                     </div>
                                     <div className="relative">
-                                        <span className="absolute left-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-outline">lock</span>
                                         <input id="password" type={showPassword ? 'text' : 'password'} value={password} onChange={(e) => setPassword(e.target.value)}
-                                            className="w-full pl-12 pr-12 py-4 bg-surface-container-high rounded-md border-none focus:ring-2 focus:ring-primary/20 outline-none transition-all placeholder:text-outline-variant"
+                                            className="w-full pl-4 pr-12 py-4 bg-surface-container-high rounded-md border-none focus:ring-2 focus:ring-primary/20 outline-none transition-all placeholder:text-outline-variant"
                                             placeholder="••••••••" required />
                                         <button type="button" onClick={() => setShowPassword(!showPassword)}
                                             className="absolute right-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-outline hover:text-primary transition-colors">
@@ -197,8 +195,8 @@ export default function Login() {
                                     </div>
                                 </div>
                                 <button type="submit" disabled={loading}
-                                    className="w-full py-4 rounded-md bg-gradient-to-r from-primary to-primary-container text-on-primary font-bold text-lg shadow-xl active:scale-[0.98] transition-transform disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2">
-                                    {loading ? <><span className="material-symbols-outlined animate-spin text-xl">progress_activity</span>Logging in...</> : 'Login'}
+                                    className="w-full py-4 rounded-md bg-gradient-to-r from-primary to-primary-container text-on-primary font-bold text-lg shadow-xl active:scale-[0.98] transition-transform disabled:opacity-60 disabled:cursor-not-allowed">
+                                    {loading ? 'Logging in...' : 'Login'}
                                 </button>
                             </form>
 
