@@ -20,10 +20,12 @@ router.get('/', auth, async (req, res) => {
             borrowed_amount: user.borrowed_amount,
             next_payment_date: user.next_payment_date,
             trust_score: user.trust_score,
+            avatar_url: user.avatar_url,
+            two_factor_enabled: user.two_factor_enabled,
             recent_transactions: txRes.rows,
             community: {
-                active_members: parseInt(memberCount) + 5,
-                total_capital: parseFloat(totalDepRes.rows[0].total) + 52000000,
+                active_members: parseInt(memberCount),
+                total_capital: parseFloat(totalDepRes.rows[0].total),
             }
         });
     } catch (err) {

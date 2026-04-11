@@ -142,7 +142,7 @@ export default function Dashboard() {
                                 </div>
                                 <div>
                                     <p className="text-sm opacity-70">Active Members</p>
-                                    <p className="text-xl font-bold">{(data?.community?.active_members || 1248).toLocaleString('en-IN')}</p>
+                                    <p className="text-xl font-bold">{(data?.community?.active_members || 0).toLocaleString('en-IN')}</p>
                                 </div>
                             </div>
                             <div className="flex items-center gap-4">
@@ -151,7 +151,7 @@ export default function Dashboard() {
                                 </div>
                                 <div>
                                     <p className="text-sm opacity-70">Total Shared Capital</p>
-                                    <p className="text-xl font-bold">₹{((data?.community?.total_capital || 12000000) / 10000000).toFixed(1)} Cr</p>
+                                    <p className="text-xl font-bold">₹{((data?.community?.total_capital || 0) / 10000000).toFixed(1)} Cr</p>
                                 </div>
                             </div>
                         </div>

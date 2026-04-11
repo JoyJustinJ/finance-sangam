@@ -32,7 +32,9 @@ async function initDb() {
       total_deposited NUMERIC DEFAULT 0,
       interest_earned NUMERIC DEFAULT 0,
       borrowed_amount NUMERIC DEFAULT 0,
-      next_payment_date TEXT
+      next_payment_date TEXT,
+      avatar_url TEXT,
+      two_factor_enabled BOOLEAN DEFAULT FALSE
     );
 
     CREATE TABLE IF NOT EXISTS transactions (
@@ -66,14 +68,6 @@ async function initDb() {
       created_at TIMESTAMP DEFAULT NOW()
     );
 
-    CREATE TABLE IF NOT EXISTS members (
-      id SERIAL PRIMARY KEY,
-      name TEXT NOT NULL,
-      joined_date TEXT,
-      avatar_url TEXT,
-      contribution_pct INTEGER DEFAULT 50,
-      level TEXT DEFAULT 'Rising'
-    );
   `);
 
   // Seed primary admin user if not exists

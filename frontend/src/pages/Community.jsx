@@ -49,11 +49,13 @@ export default function Community() {
                         <h3 className="text-on-surface-variant text-sm uppercase tracking-widest font-semibold">Total Members</h3>
                     </div>
                     <div className="mt-8">
-                        <span className="text-5xl font-headline font-bold text-on-surface">{(data?.total_members || 1248).toLocaleString('en-IN')}</span>
-                        <div className="mt-2 flex items-center gap-1 text-secondary font-semibold text-sm">
-                            <span className="material-symbols-outlined text-xs">trending_up</span>
-                            <span>+12% this month</span>
-                        </div>
+                        <span className="text-5xl font-headline font-bold text-on-surface">{(data?.total_members || 0).toLocaleString('en-IN')}</span>
+                        {data?.members_growth && (
+                            <div className="mt-2 flex items-center gap-1 text-secondary font-semibold text-sm">
+                                <span className="material-symbols-outlined text-xs">trending_up</span>
+                                <span>{data.members_growth} this month</span>
+                            </div>
+                        )}
                     </div>
                 </div>
 

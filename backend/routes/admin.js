@@ -71,4 +71,38 @@ router.post('/approve-user/:id', auth, isAdmin, async (req, res) => {
     }
 });
 
+// REJECT a deposit
+router.post('/reject-deposit/:id', auth, isAdmin, async (req, res) => {
+    const depositId = req.params.id;
+    try {
+        const depRes = await query('SELECT * FROM deposits WHERE id = $1', [depositId]);
+        if (depRes.rows.length === 0) return res.status(404).json({ error: 'Deposit not found' });
+
+        const { user_id, amount } = depRes.rows[0];
+
+        await query("UPDATE deposits SET status = 'REJECTED' WHERE id = $1", [depositId]);
+        await query(
+            "UPDATE transactions SET status = 'FAILED' WHERE user_id = $1 AND amount = $2 AND status = 'PENDING' AND type = 'credit'",
+            [user_id, amount]
+        );
+        res.json({ message: 'Deposit rejected' });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Server error' });
+    }
+});
+
+// TOTAL SYSTEM WIPE (Dangerous - Admins only)
+router.post('/wipe-system', auth, isAdmin, async (req, res) => {
+    try {
+        await query('TRUNCATE transactions, deposits, loans CASCADE;');
+        await query("DELETE FROM users WHERE role != 'admin'");
+        await query("UPDATE users SET balance = 0, total_deposited = 0, interest_earned = 0, borrowed_amount = 0 WHERE role = 'admin'");
+        res.json({ message: 'System wiped successfully. Start fresh!' });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Server error' });
+    }
+});
+
 module.exports = router;

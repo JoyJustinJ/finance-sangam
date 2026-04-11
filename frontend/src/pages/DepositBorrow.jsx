@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getDeposits, submitDeposit, getLoans, submitLoan } from '../api';
+import { toast } from 'react-hot-toast';
 
 const fmt = (n) => `₹${Number(n || 0).toLocaleString('en-IN')}`;
 
@@ -48,11 +49,13 @@ export default function DepositBorrow() {
         setDepositLoading(true);
         try {
             const res = await submitDeposit(parseFloat(depositAmount), depositMethod);
-            setDepositSuccess(`✅ Deposit of ${fmt(depositAmount)} successful! New balance: ${fmt(res.data.new_balance)}`);
+            toast.success(`Deposit request submitted!`);
+            setDepositSuccess(`✅ Success! Your request for ${fmt(depositAmount)} is awaiting admin approval.`);
             setDepositAmount('');
-            setDepositData(d => ({ ...d, available_balance: res.data.new_balance }));
         } catch (err) {
-            setDepositError(err.response?.data?.error || 'Deposit failed');
+            const msg = err.response?.data?.error || 'Deposit failed';
+            setDepositError(msg);
+            toast.error(msg);
         } finally {
             setDepositLoading(false);
         }
@@ -64,10 +67,13 @@ export default function DepositBorrow() {
         setLoanLoading(true);
         try {
             const res = await submitLoan(parseFloat(loanAmount), loanMonths);
-            setLoanSuccess(`✅ Loan of ${fmt(loanAmount)} approved! EMI: ${fmt(res.data.monthly_installment)}/month.`);
+            toast.success(`Loan of ${fmt(loanAmount)} approved!`);
+            setLoanSuccess(`✅ Approved! EMI: ${fmt(res.data.monthly_installment)}/month.`);
             setLoanAmount('');
         } catch (err) {
-            setLoanError(err.response?.data?.error || 'Loan request failed');
+            const msg = err.response?.data?.error || 'Loan request failed';
+            setLoanError(msg);
+            toast.error(msg);
         } finally {
             setLoanLoading(false);
         }
@@ -87,10 +93,10 @@ export default function DepositBorrow() {
                 <div className="flex-1">
                     <div className="flex justify-between items-end mb-2">
                         <span className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Trust Score</span>
-                        <span className="text-sm font-headline font-bold text-secondary">{loanData?.trust_score || 840} / 1000</span>
+                        <span className="text-sm font-headline font-bold text-secondary">{loanData?.trust_score || 0} / 1000</span>
                     </div>
                     <div className="h-1.5 w-full bg-surface-container-high rounded-full overflow-hidden">
-                        <div className="h-full bg-gradient-to-r from-secondary to-primary rounded-full" style={{ width: `${((loanData?.trust_score || 840) / 1000) * 100}%` }}></div>
+                        <div className="h-full bg-gradient-to-r from-secondary to-primary rounded-full" style={{ width: `${((loanData?.trust_score || 0) / 1000) * 100}%` }}></div>
                     </div>
                 </div>
                 <div className="bg-secondary-container p-2 rounded-full">
@@ -158,7 +164,7 @@ export default function DepositBorrow() {
                             <div className="flex justify-between items-start mb-6">
                                 <div>
                                     <p className="text-xs font-bold text-on-surface-variant uppercase tracking-widest mb-1">Max Eligibility</p>
-                                    <h3 className="text-3xl font-headline font-extrabold text-primary">{fmt(loanData?.max_eligibility || 250000)}</h3>
+                                    <h3 className="text-3xl font-headline font-extrabold text-primary">{fmt(loanData?.max_eligibility || 0)}</h3>
                                 </div>
                                 <span className="bg-tertiary-fixed-dim text-on-tertiary-fixed-variant text-[10px] px-3 py-1 rounded-full font-bold uppercase tracking-wider">Premium Member</span>
                             </div>
@@ -217,7 +223,7 @@ export default function DepositBorrow() {
                         <span className="material-symbols-outlined text-on-secondary">group</span>
                     </div>
                     <p className="text-xs text-on-surface-variant">
-                        <span className="font-bold text-primary">14 people</span> from your community recently deposited.
+                        Secure and community-backed capital for your future.
                     </p>
                 </div>
             </div>

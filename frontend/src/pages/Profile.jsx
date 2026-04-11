@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getProfile, updateProfile } from '../api';
+import { toast } from 'react-hot-toast';
 
 const fmt = (n) => `₹${Number(n || 0).toLocaleString('en-IN')}`;
 
@@ -13,12 +14,35 @@ export default function Profile() {
     const [passError, setPassError] = useState('');
     const [passLoading, setPassLoading] = useState(false);
 
+    const [isEditing, setIsEditing] = useState(false);
+    const [editData, setEditData] = useState({ name: '', avatar_url: '', two_factor_enabled: false });
+
     useEffect(() => {
         getProfile()
-            .then(res => setData(res.data))
+            .then(res => {
+                setData(res.data);
+                setEditData({
+                    name: res.data.user.name,
+                    avatar_url: res.data.user.avatar_url || '',
+                    two_factor_enabled: res.data.user.two_factor_enabled || false
+                });
+            })
             .catch(err => setError(err.response?.data?.error || 'Failed to load profile'))
             .finally(() => setLoading(false));
     }, []);
+
+    const handleProfileUpdate = async (e) => {
+        e.preventDefault();
+        try {
+            const res = await updateProfile(editData);
+            setData({ ...data, user: res.data.user });
+            localStorage.setItem('fs_user', JSON.stringify(res.data.user));
+            setIsEditing(false);
+            toast.success('Profile updated!');
+        } catch (err) {
+            toast.error('Failed to update profile');
+        }
+    };
 
     const handlePassChange = async (e) => {
         e.preventDefault();
@@ -27,7 +51,7 @@ export default function Profile() {
         setPassError('');
         try {
             await updateProfile({ currentPassword: passData.current, newPassword: passData.new });
-            alert('Password updated successfully!');
+            toast.success('Password updated successfully!');
             setShowPassModal(false);
             setPassData({ current: '', new: '', confirm: '' });
         } catch (err) {
@@ -52,7 +76,7 @@ export default function Profile() {
     const storedUser = JSON.parse(localStorage.getItem('fs_user') || '{}');
 
     return (
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 relative">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 relative pb-20">
             {/* Password Modal */}
             {showPassModal && (
                 <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in zoom-in duration-300">
@@ -103,29 +127,64 @@ export default function Profile() {
 
             {/* Profile Column */}
             <div className="lg:col-span-5 space-y-8">
-                <section className="bg-surface-container-lowest rounded-full p-8 shadow-[0_4px_20px_rgba(0,0,0,0.02)]">
+                <section className="bg-surface-container-lowest rounded-[2rem] p-8 shadow-[0_4px_20px_rgba(0,0,0,0.02)]">
                     <div className="flex flex-col md:flex-row items-center gap-6">
-                        <div className="relative">
+                        <div className="relative group">
                             <div className="w-24 h-24 rounded-full bg-primary overflow-hidden ring-4 ring-secondary-container/30 flex items-center justify-center">
-                                <span className="material-symbols-outlined text-on-primary text-4xl">person</span>
+                                {user?.avatar_url ? (
+                                    <img src={user.avatar_url} alt="Profile" className="w-full h-full object-cover" />
+                                ) : (
+                                    <span className="material-symbols-outlined text-on-primary text-4xl">person</span>
+                                )}
                             </div>
-                            <div className="absolute bottom-0 right-0 bg-secondary text-white p-1 rounded-full border-2 border-white">
-                                <span className="material-symbols-outlined text-[16px] block">verified</span>
-                            </div>
+                            {user?.kyc_status === 'verified' && (
+                                <div className="absolute bottom-0 right-0 bg-secondary text-white p-1 rounded-full border-2 border-white">
+                                    <span className="material-symbols-outlined text-[16px] block">verified</span>
+                                </div>
+                            )}
                         </div>
-                        <div className="text-center md:text-left">
-                            <h2 className="text-2xl font-extrabold font-headline text-primary tracking-tight">{user?.name || storedUser?.name}</h2>
-                            <p className="text-on-surface-variant font-medium">+91 {user?.phone}</p>
-                            <div className="mt-3 flex flex-wrap gap-2 justify-center md:justify-start">
-                                <span className="px-3 py-1 bg-secondary-container text-on-secondary-container text-xs font-semibold rounded-full flex items-center gap-1">
-                                    <span className="material-symbols-outlined text-sm">task_alt</span>
-                                    KYC: {user?.kyc_status}
-                                </span>
-                                <span className="px-3 py-1 bg-surface-container-high text-on-surface-variant text-xs font-medium rounded-full">
-                                    Joined: {user?.joined_date}
-                                </span>
+
+                        {!isEditing ? (
+                            <div className="text-center md:text-left flex-1">
+                                <div className="flex justify-between items-start">
+                                    <div>
+                                        <h2 className="text-2xl font-extrabold font-headline text-primary tracking-tight">{user?.name}</h2>
+                                        <p className="text-on-surface-variant font-medium">+91 {user?.phone}</p>
+                                    </div>
+                                    <button onClick={() => setIsEditing(true)} className="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors p-2 bg-surface-container-high rounded-full text-sm">edit</button>
+                                </div>
+                                <div className="mt-3 flex flex-wrap gap-2 justify-center md:justify-start">
+                                    <span className="px-3 py-1 bg-secondary-container text-on-secondary-container text-xs font-semibold rounded-full flex items-center gap-1">
+                                        <span className="material-symbols-outlined text-sm">task_alt</span>
+                                        KYC: {user?.kyc_status}
+                                    </span>
+                                    <span className="px-3 py-1 bg-surface-container-high text-on-surface-variant text-xs font-medium rounded-full">
+                                        {user?.role?.toUpperCase()}
+                                    </span>
+                                </div>
                             </div>
-                        </div>
+                        ) : (
+                            <form onSubmit={handleProfileUpdate} className="flex-1 space-y-4">
+                                <div>
+                                    <label className="text-[10px] uppercase font-black text-on-surface-variant px-1">Full Name</label>
+                                    <input
+                                        type="text" className="w-full bg-surface-container-high rounded-xl p-3 text-sm font-bold outline-none focus:ring-2 ring-primary"
+                                        value={editData.name} onChange={e => setEditData({ ...editData, name: e.target.value })}
+                                    />
+                                </div>
+                                <div>
+                                    <label className="text-[10px] uppercase font-black text-on-surface-variant px-1">Avatar URL</label>
+                                    <input
+                                        type="text" placeholder="https://..." className="w-full bg-surface-container-high rounded-xl p-3 text-sm font-medium outline-none"
+                                        value={editData.avatar_url} onChange={e => setEditData({ ...editData, avatar_url: e.target.value })}
+                                    />
+                                </div>
+                                <div className="flex gap-2">
+                                    <button type="submit" className="flex-1 bg-primary text-on-primary font-bold py-2 rounded-xl text-sm">Save</button>
+                                    <button onClick={() => setIsEditing(false)} className="flex-1 bg-surface-container-highest text-on-surface font-bold py-2 rounded-xl text-sm transition-transform active:scale-95">Cancel</button>
+                                </div>
+                            </form>
+                        )}
                     </div>
                 </section>
 
@@ -160,24 +219,56 @@ export default function Profile() {
 
                 <section className="space-y-3">
                     <h3 className="text-sm font-bold opacity-60 uppercase tracking-[0.2em] px-2 text-on-surface-variant">Account Preferences</h3>
-                    {[
-                        { icon: 'lock', title: 'Change Password', desc: 'Update your login credentials', action: () => setShowPassModal(true) },
-                        { icon: 'notifications_active', title: 'Notification Preferences', desc: 'Manage alerts and updates' },
-                        { icon: 'shield', title: 'Security', desc: '2FA and biometric settings' }
-                    ].map((s, i) => (
-                        <button key={i} onClick={s.action} className="flex items-center justify-between w-full p-5 bg-surface-container-lowest hover:bg-surface-container-low transition-colors rounded-full group shadow-sm">
-                            <div className="flex items-center gap-4">
-                                <div className="w-12 h-12 rounded-full bg-surface-container-high flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all">
-                                    <span className="material-symbols-outlined">{s.icon}</span>
-                                </div>
-                                <div className="text-left">
-                                    <p className="font-semibold text-on-surface">{s.title}</p>
-                                    <p className="text-xs text-on-surface-variant">{s.desc}</p>
-                                </div>
+                    <button onClick={() => setShowPassModal(true)} className="flex items-center justify-between w-full p-5 bg-surface-container-lowest hover:bg-surface-container-low transition-colors rounded-[1.5rem] group shadow-sm">
+                        <div className="flex items-center gap-4">
+                            <div className="w-12 h-12 rounded-full bg-surface-container-high flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all">
+                                <span className="material-symbols-outlined">lock</span>
                             </div>
-                            <span className="material-symbols-outlined text-outline-variant">chevron_right</span>
+                            <div className="text-left">
+                                <p className="font-semibold text-on-surface">Change Password</p>
+                                <p className="text-xs text-on-surface-variant">Update your login credentials</p>
+                            </div>
+                        </div>
+                        <span className="material-symbols-outlined text-outline-variant">chevron_right</span>
+                    </button>
+
+                    <div className="flex items-center justify-between w-full p-5 bg-surface-container-lowest rounded-[1.5rem] shadow-sm">
+                        <div className="flex items-center gap-4">
+                            <div className="w-12 h-12 rounded-full bg-surface-container-high flex items-center justify-center text-secondary">
+                                <span className="material-symbols-outlined">shield</span>
+                            </div>
+                            <div className="text-left">
+                                <p className="font-semibold text-on-surface">2-Step Verification</p>
+                                <p className="text-xs text-on-surface-variant">Secure your account with SMS</p>
+                            </div>
+                        </div>
+                        <button
+                            onClick={async () => {
+                                try {
+                                    const next = !user.two_factor_enabled;
+                                    const res = await updateProfile({ two_factor_enabled: next });
+                                    setData({ ...data, user: res.data.user });
+                                    toast.success(`2FA ${next ? 'enabled' : 'disabled'}`);
+                                } catch (e) { toast.error('Failed to toggle 2FA'); }
+                            }}
+                            className={`w-12 h-6 rounded-full transition-colors relative ${user?.two_factor_enabled ? 'bg-secondary' : 'bg-surface-container-highest'}`}
+                        >
+                            <div className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-all ${user?.two_factor_enabled ? 'left-7' : 'left-1'}`}></div>
                         </button>
-                    ))}
+                    </div>
+
+                    <button className="flex items-center justify-between w-full p-5 bg-surface-container-lowest hover:bg-surface-container-low transition-colors rounded-[1.5rem] group shadow-sm opacity-50 cursor-not-allowed">
+                        <div className="flex items-center gap-4">
+                            <div className="w-12 h-12 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface-variant">
+                                <span className="material-symbols-outlined">notifications_active</span>
+                            </div>
+                            <div className="text-left">
+                                <p className="font-semibold text-on-surface">Notification History</p>
+                                <p className="text-xs text-on-surface-variant">Coming soon in next update</p>
+                            </div>
+                        </div>
+                        <span className="material-symbols-outlined text-outline-variant">chevron_right</span>
+                    </button>
                 </section>
             </div>
 
