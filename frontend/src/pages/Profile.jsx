@@ -192,14 +192,18 @@ export default function Profile() {
                     <div className="flex justify-between items-end mb-4">
                         <div>
                             <p className="text-sm font-semibold text-secondary uppercase tracking-widest">Community Pulse</p>
-                            <h3 className="text-xl font-bold font-headline text-primary">Trust Score: {user?.trust_score}</h3>
+                            <h3 className="text-xl font-bold font-headline text-primary">Trust Score: {user?.trust_score ?? '—'}</h3>
                         </div>
-                        <span className="text-primary font-bold text-lg">Excellent</span>
+                        <span className="text-primary font-bold text-lg">
+                            {(user?.trust_score || 0) >= 800 ? 'Excellent' : (user?.trust_score || 0) >= 600 ? 'Good' : (user?.trust_score || 0) >= 400 ? 'Fair' : 'Building'}
+                        </span>
                     </div>
                     <div className="h-4 w-full bg-surface-container-highest rounded-full overflow-hidden">
-                        <div className="h-full bg-gradient-to-r from-secondary to-primary rounded-full" style={{ width: `${((user?.trust_score || 840) / 1000) * 100}%` }}></div>
+                        <div className="h-full bg-gradient-to-r from-secondary to-primary rounded-full" style={{ width: `${((user?.trust_score || 0) / 1000) * 100}%` }}></div>
                     </div>
-                    <p className="mt-4 text-sm text-on-surface-variant leading-relaxed">Your contribution has placed you in the top 5% of members this month.</p>
+                    <p className="mt-4 text-sm text-on-surface-variant leading-relaxed">
+                        Your trust score reflects your repayment history and community activity.
+                    </p>
                 </section>
 
                 {/* Account Stats */}

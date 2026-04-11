@@ -9,12 +9,13 @@ router.get('/', auth, async (req, res) => {
         const userCount = await query('SELECT COUNT(*) FROM users');
         const totalDep = await query("SELECT COALESCE(SUM(amount),0) as total FROM deposits WHERE status='COMPLETED'");
         const totalLoans = await query("SELECT COALESCE(SUM(amount),0) as total FROM loans WHERE status='ACTIVE'");
+        const totalRepayments = await query("SELECT COALESCE(SUM(amount),0) as total FROM transactions WHERE type='credit' AND title ILIKE '%repay%'");
 
         res.json({
             total_members: parseInt(userCount.rows[0].count) + members.rows.length,
-            total_pooled: parseFloat(totalDep.rows[0].total) + 52000000,
-            total_loans: parseFloat(totalLoans.rows[0].total) + 38000000,
-            total_repayments: 21000000,
+            total_pooled: parseFloat(totalDep.rows[0].total),
+            total_loans: parseFloat(totalLoans.rows[0].total),
+            total_repayments: parseFloat(totalRepayments.rows[0].total),
             members: members.rows,
         });
     } catch (err) {
