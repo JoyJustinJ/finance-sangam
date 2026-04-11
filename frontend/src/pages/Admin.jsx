@@ -4,6 +4,7 @@ import { toast } from 'react-hot-toast';
 
 const Admin = () => {
     const [pendingDeposits, setPendingDeposits] = useState([]);
+    const [pendingLoans, setPendingLoans] = useState([]);
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -14,8 +15,10 @@ const Admin = () => {
     const fetchAdminData = async () => {
         try {
             const depositsRes = await api.get('/admin/pending-deposits');
+            const loansRes = await api.get('/admin/pending-loans');
             const usersRes = await api.get('/admin/users');
             setPendingDeposits(depositsRes.data);
+            setPendingLoans(loansRes.data);
             setUsers(usersRes.data);
         } catch (err) {
             console.error('Failed to fetch admin data');
@@ -53,6 +56,28 @@ const Admin = () => {
             fetchAdminData();
         } catch (err) {
             toast.error('Failed to reject');
+        }
+    };
+
+    const approveLoan = async (id) => {
+        if (!window.confirm('Approve this loan for disbursement?')) return;
+        try {
+            await api.post(`/admin/approve-loan/${id}`);
+            toast.success('Loan Approved!');
+            fetchAdminData();
+        } catch (err) {
+            toast.error('Failed to approve loan');
+        }
+    };
+
+    const rejectLoan = async (id) => {
+        if (!window.confirm('Are you certain you want to reject this loan application?')) return;
+        try {
+            await api.post(`/admin/reject-loan/${id}`);
+            toast.success('Loan Application Rejected');
+            fetchAdminData();
+        } catch (err) {
+            toast.error('Failed to reject loan');
         }
     };
 
@@ -120,6 +145,61 @@ const Admin = () => {
                                                 className="bg-primary text-on-primary shadow-lg shadow-primary/20 font-bold px-4 py-2 rounded-xl text-sm hover:opacity-90 transition-all active:scale-95"
                                             >
                                                 Verify Payment
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                )}
+            </section>
+
+            {/* Pending Loans */}
+            <section className="bg-surface-container-low rounded-3xl border border-outline-variant p-8 shadow-sm mt-8">
+                <h2 className="text-2xl font-bold mb-6 flex items-center gap-3">
+                    <span className="w-3 h-3 bg-secondary rounded-full animate-pulse shadow-lg shadow-secondary/50"></span>
+                    Loan Verification
+                </h2>
+                {pendingLoans.length === 0 ? (
+                    <div className="text-center py-10 bg-surface-container-high rounded-2xl border border-dashed border-outline-variant">
+                        <p className="text-on-surface-variant italic">No pending loan requests currently.</p>
+                    </div>
+                ) : (
+                    <div className="overflow-x-auto">
+                        <table className="w-full text-left border-collapse">
+                            <thead>
+                                <tr className="text-on-surface-variant text-xs uppercase tracking-widest border-b border-outline-variant">
+                                    <th className="pb-4 font-bold">Member</th>
+                                    <th className="pb-4 font-bold">Details</th>
+                                    <th className="pb-4 font-bold">Amount</th>
+                                    <th className="pb-4 font-bold text-center">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {pendingLoans.map((loan) => (
+                                    <tr key={loan.id} className="border-b last:border-0 border-outline-variant/30">
+                                        <td className="py-5">
+                                            <div className="font-bold">{loan.user_name}</div>
+                                            <div className="text-xs text-on-surface-variant">{loan.user_phone}</div>
+                                        </td>
+                                        <td className="py-5">
+                                            <div className="text-sm font-bold">{loan.months} Months</div>
+                                            <div className="text-xs text-on-surface-variant">{loan.interest_rate}% Interest</div>
+                                        </td>
+                                        <td className="py-5 font-black text-xl text-primary">₹{parseFloat(loan.amount).toLocaleString()}</td>
+                                        <td className="py-5 text-right flex items-center justify-end gap-3">
+                                            <button
+                                                onClick={() => rejectLoan(loan.id)}
+                                                className="bg-error-container text-on-error-container font-bold px-4 py-2 rounded-xl text-sm hover:opacity-80 transition-all active:scale-95"
+                                            >
+                                                Reject
+                                            </button>
+                                            <button
+                                                onClick={() => approveLoan(loan.id)}
+                                                className="bg-primary text-on-primary shadow-lg font-bold px-4 py-2 rounded-xl text-sm hover:opacity-90 transition-all active:scale-95"
+                                            >
+                                                Approve Loan
                                             </button>
                                         </td>
                                     </tr>

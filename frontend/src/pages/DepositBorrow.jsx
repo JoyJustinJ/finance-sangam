@@ -218,42 +218,50 @@ export default function DepositBorrow() {
                     </form>
                 )}
 
-                {activeTab === 'borrow' && loanData?.loans?.filter(l => l.status === 'ACTIVE').length > 0 && (
+                {activeTab === 'borrow' && loanData?.loans?.filter(l => l.status === 'ACTIVE' || l.status === 'PENDING').length > 0 && (
                     <div className="mt-8 space-y-4">
-                        <h3 className="text-xl font-headline font-bold text-primary">Active Loans</h3>
-                        {loanData.loans.filter(l => l.status === 'ACTIVE').map(loan => (
+                        <h3 className="text-xl font-headline font-bold text-primary">Your Loans</h3>
+                        {loanData.loans.filter(l => l.status === 'ACTIVE' || l.status === 'PENDING').map(loan => (
                             <div key={loan.id} className="bg-surface-container-low p-6 rounded-xl flex flex-col gap-4">
                                 <div className="flex justify-between items-start">
                                     <div>
-                                        <p className="font-bold text-on-surface">Loan Amount: {fmt(loan.amount)}</p>
-                                        <p className="text-xs text-on-surface-variant">{loan.months} months remaining</p>
+                                        <div className="flex items-center gap-2">
+                                            <p className="font-bold text-on-surface">Loan Amount: {fmt(loan.amount)}</p>
+                                            {loan.status === 'PENDING' && (
+                                                <span className="text-[10px] uppercase font-bold tracking-widest bg-amber-500/20 text-amber-600 px-2 py-0.5 rounded-full">Pending Approval</span>
+                                            )}
+                                        </div>
+                                        <p className="text-xs text-on-surface-variant">{loan.months} months layout</p>
                                     </div>
                                     <span className="font-headline font-bold text-secondary">{fmt(loan.monthly_installment)} / mo</span>
                                 </div>
-                                <button
-                                    onClick={async (e) => {
-                                        e.preventDefault();
-                                        const btn = e.currentTarget;
-                                        btn.disabled = true;
-                                        btn.innerHTML = 'Processing...';
-                                        try {
-                                            const { repayLoan, getLoans, getDeposits } = await import('../api');
-                                            await repayLoan(loan.id);
-                                            toast.success('EMI Repaid Successfully!');
-                                            const lData = await getLoans();
-                                            const dData = await getDeposits();
-                                            if (setLoanData) setLoanData(lData.data);
-                                            if (setDepositData) setDepositData(dData.data);
-                                        } catch (err) {
-                                            toast.error(err.response?.data?.error || 'Repayment failed');
-                                        } finally {
-                                            btn.disabled = false;
-                                            btn.innerHTML = 'Repay EMI';
-                                        }
-                                    }}
-                                    className="w-full py-3 bg-secondary-container text-on-secondary-container font-bold rounded-lg shadow-sm active:scale-95 transition-all">
-                                    Repay EMI
-                                </button>
+
+                                {loan.status === 'ACTIVE' && (
+                                    <button
+                                        onClick={async (e) => {
+                                            e.preventDefault();
+                                            const btn = e.currentTarget;
+                                            btn.disabled = true;
+                                            btn.innerHTML = 'Processing...';
+                                            try {
+                                                const { repayLoan, getLoans, getDeposits } = await import('../api');
+                                                await repayLoan(loan.id);
+                                                toast.success('EMI Repaid Successfully!');
+                                                const lData = await getLoans();
+                                                const dData = await getDeposits();
+                                                if (setLoanData) setLoanData(lData.data);
+                                                if (setDepositData) setDepositData(dData.data);
+                                            } catch (err) {
+                                                toast.error(err.response?.data?.error || 'Repayment failed');
+                                            } finally {
+                                                btn.disabled = false;
+                                                btn.innerHTML = 'Repay EMI';
+                                            }
+                                        }}
+                                        className="w-full py-3 bg-secondary-container text-on-secondary-container font-bold rounded-lg shadow-sm active:scale-95 transition-all">
+                                        Repay EMI
+                                    </button>
+                                )}
                             </div>
                         ))}
                     </div>

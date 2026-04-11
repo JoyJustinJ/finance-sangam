@@ -31,20 +31,11 @@ router.post('/', auth, async (req, res) => {
         const processingFee = parsedAmount * 0.02;
 
         const loan = await query(
-            "INSERT INTO loans (user_id, amount, interest_rate, months, monthly_installment, status) VALUES ($1,$2,$3,$4,$5,'ACTIVE') RETURNING *",
+            "INSERT INTO loans (user_id, amount, interest_rate, months, monthly_installment, status) VALUES ($1,$2,$3,$4,$5,'PENDING') RETURNING *",
             [req.user.id, parsedAmount, 8.5, parsedMonths, emi.toFixed(2)]
         );
 
-        const nextPaymentDate = new Date();
-        nextPaymentDate.setMonth(nextPaymentDate.getMonth() + 1);
-        await query('UPDATE users SET borrowed_amount = borrowed_amount + $1, balance = balance + $1, next_payment_date = $2 WHERE id = $3',
-            [parsedAmount, nextPaymentDate.toISOString().split('T')[0], req.user.id]);
-        await query(
-            "INSERT INTO transactions (user_id, type, title, description, amount, status) VALUES ($1,'debit','Loan Disbursed','Community Loan',$2,'COMPLETED')",
-            [req.user.id, parsedAmount]
-        );
-
-        res.status(201).json({ message: 'Loan approved and disbursed', loan: loan.rows[0], monthly_installment: Math.round(emi), processing_fee: Math.round(processingFee) });
+        res.status(201).json({ message: 'Loan requested and is awaiting Admin approval', loan: loan.rows[0], monthly_installment: Math.round(emi), processing_fee: Math.round(processingFee) });
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: 'Server error' });

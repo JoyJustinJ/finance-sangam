@@ -92,6 +92,67 @@ router.post('/reject-deposit/:id', auth, isAdmin, async (req, res) => {
     }
 });
 
+// GET all pending loans
+router.get('/pending-loans', auth, isAdmin, async (req, res) => {
+    try {
+        const result = await query(`
+            SELECT l.*, u.name as user_name, u.phone as user_phone 
+            FROM loans l 
+            JOIN users u ON l.user_id = u.id 
+            WHERE l.status = 'PENDING' 
+            ORDER BY l.created_at ASC
+        `);
+        res.json(result.rows);
+    } catch (err) {
+        res.status(500).json({ error: 'Server error' });
+    }
+});
+
+// APPROVE a loan
+router.post('/approve-loan/:id', auth, isAdmin, async (req, res) => {
+    const loanId = req.params.id;
+    try {
+        const loanRes = await query("SELECT * FROM loans WHERE id = $1 AND status = 'PENDING'", [loanId]);
+        if (loanRes.rows.length === 0) return res.status(404).json({ error: 'Pending loan not found' });
+
+        const loan = loanRes.rows[0];
+        const { user_id, amount } = loan;
+
+        // 1. Update Loan Status
+        await query("UPDATE loans SET status = 'ACTIVE' WHERE id = $1", [loanId]);
+
+        // 2. Update User Balance & Borrowed Amount
+        const nextPaymentDate = new Date();
+        nextPaymentDate.setMonth(nextPaymentDate.getMonth() + 1);
+        await query(
+            "UPDATE users SET balance = balance + $1, borrowed_amount = borrowed_amount + $1, next_payment_date = $2 WHERE id = $3",
+            [amount, nextPaymentDate.toISOString().split('T')[0], user_id]
+        );
+
+        // 3. Mark the transaction as COMPLETED
+        await query(
+            "INSERT INTO transactions (user_id, type, title, description, amount, status) VALUES ($1,'debit','Loan Disbursed','Community Loan',$2,'COMPLETED')",
+            [user_id, amount]
+        );
+
+        res.json({ message: 'Loan approved and disbursed!' });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Server error' });
+    }
+});
+
+// REJECT a loan
+router.post('/reject-loan/:id', auth, isAdmin, async (req, res) => {
+    const loanId = req.params.id;
+    try {
+        await query("UPDATE loans SET status = 'REJECTED' WHERE id = $1 AND status = 'PENDING'", [loanId]);
+        res.json({ message: 'Loan rejected' });
+    } catch (err) {
+        res.status(500).json({ error: 'Server error' });
+    }
+});
+
 // TOTAL SYSTEM WIPE (Dangerous - Admins only)
 router.post('/wipe-system', auth, isAdmin, async (req, res) => {
     try {
