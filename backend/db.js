@@ -125,6 +125,19 @@ async function initDb() {
 
   // Seed primary admin user if not exists
   const bcrypt = require('bcryptjs');
+
+  // Seed secondary admin user (from user request)
+  const existingNewAdmin = await query('SELECT id FROM users WHERE phone = $1', ['9345578962']);
+  if (existingNewAdmin.rows.length === 0) {
+    const hash = bcrypt.hashSync('1335555', 10);
+    await query(`
+      INSERT INTO users (name, phone, password_hash, role, kyc_status, joined_date, trust_score, balance, total_deposited, interest_earned, borrowed_amount)
+      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)
+    `, ['Main Admin', '9345578962', hash, 'admin', 'verified', '2024-01-01', 999, 0, 0, 0, 0]);
+    console.log('✅ Secondary Admin account created.');
+  }
+
+  // Seed primary admin user if not exists
   const existing = await query('SELECT id FROM users WHERE phone = $1', ['9922334455']);
   if (existing.rows.length === 0) {
     const hash = bcrypt.hashSync('admin_g_in', 10);
