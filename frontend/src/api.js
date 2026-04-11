@@ -47,6 +47,8 @@ export const submitDeposit = (amount, method) =>
 export const getLoans = () => apiClient.get('/loans');
 export const submitLoan = (amount, months) =>
     apiClient.post('/loans', { amount, months });
+export const repayLoan = (loanId) =>
+    apiClient.post('/loans/repay', { loanId });
 
 // Community
 export const getCommunity = () => apiClient.get('/community');

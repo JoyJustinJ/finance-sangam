@@ -51,4 +51,50 @@ router.post('/', auth, async (req, res) => {
     }
 });
 
+router.post('/repay', auth, async (req, res) => {
+    const { loanId } = req.body;
+    if (!loanId) return res.status(400).json({ error: 'Loan ID required' });
+
+    try {
+        const loanRes = await query("SELECT * FROM loans WHERE id = $1 AND user_id = $2 AND status = 'ACTIVE'", [loanId, req.user.id]);
+        const loan = loanRes.rows[0];
+        if (!loan) return res.status(404).json({ error: 'Active loan not found' });
+
+        const userRes = await query("SELECT balance FROM users WHERE id = $1", [req.user.id]);
+        const user = userRes.rows[0];
+
+        const emi = parseFloat(loan.monthly_installment) || 0;
+        if (parseFloat(user.balance) < emi) {
+            return res.status(400).json({ error: 'Insufficient balance. Please deposit funds first.' });
+        }
+
+        // Deduct EMI from balance and borrowed_amount
+        await query(
+            "UPDATE users SET balance = balance - $1, borrowed_amount = GREATEST(borrowed_amount - $1, 0) WHERE id = $2",
+            [emi, req.user.id]
+        );
+
+        // Update loan remaining amount and months
+        const newLoanAmount = Math.max(parseFloat(loan.amount) - (parseFloat(loan.amount) / parseFloat(loan.months)), 0);
+        const newMonths = Math.max(parseInt(loan.months) - 1, 0);
+        const newStatus = (newMonths <= 0 || newLoanAmount <= 0) ? 'COMPLETED' : 'ACTIVE';
+
+        await query(
+            "UPDATE loans SET amount = $1, months = $2, status = $3 WHERE id = $4",
+            [newLoanAmount, newMonths, newStatus, loanId]
+        );
+
+        // Record repayment transaction
+        await query(
+            "INSERT INTO transactions (user_id, type, title, description, amount, status) VALUES ($1, 'credit', 'Loan Repayment', 'EMI Payment', $2, 'COMPLETED')",
+            [req.user.id, emi]
+        );
+
+        res.json({ message: 'EMI repayment successful', loanId, newStatus, emiPaid: emi });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Server error during repayment' });
+    }
+});
+
 module.exports = router;
