@@ -6,12 +6,22 @@ const router = express.Router();
 
 router.get('/', auth, async (req, res) => {
     try {
-        const userRes = await query('SELECT id, name, phone, role, kyc_status, joined_date, trust_score, balance, total_deposited, interest_earned, borrowed_amount, avatar_url, two_factor_enabled FROM users WHERE id = $1', [req.user.id]);
+        const userRes = await query(
+            `SELECT id, name, phone, role, kyc_status, joined_date, trust_score,
+             COALESCE(balance, 0) AS balance,
+             COALESCE(total_deposited, 0) AS total_deposited,
+             COALESCE(interest_earned, 0) AS interest_earned,
+             COALESCE(borrowed_amount, 0) AS borrowed_amount,
+             avatar_url, two_factor_enabled
+             FROM users WHERE id = $1`,
+            [req.user.id]
+        );
         if (!userRes.rows[0]) return res.status(404).json({ error: 'User not found' });
         const txRes = await query('SELECT * FROM transactions WHERE user_id = $1 ORDER BY created_at DESC LIMIT 20', [req.user.id]);
         res.json({ user: userRes.rows[0], transactions: txRes.rows });
     } catch (err) {
-        res.status(500).json({ error: 'Server error' });
+        console.error('Profile GET error:', err);
+        res.status(500).json({ error: 'Server error', detail: err.message });
     }
 });
 

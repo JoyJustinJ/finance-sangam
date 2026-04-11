@@ -1,20 +1,57 @@
-const { Pool } = require('pg');
+const isPostgres = process.env.DATABASE_URL && process.env.DATABASE_URL !== 'postgresql://user:password@host/dbname';
+const bcrypt = require('bcryptjs');
 
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: process.env.DATABASE_URL && process.env.DATABASE_URL.includes('neon.tech')
-    ? { rejectUnauthorized: false }
-    : false,
-});
+let query;
+let pool;
 
-async function query(text, params) {
-  const client = await pool.connect();
-  try {
-    const res = await client.query(text, params);
-    return res;
-  } finally {
-    client.release();
-  }
+if (isPostgres) {
+  const { Pool } = require('pg');
+  pool = new Pool({
+    connectionString: process.env.DATABASE_URL,
+    ssl: process.env.DATABASE_URL.includes('neon.tech') ? { rejectUnauthorized: false } : false,
+  });
+
+  query = async (text, params) => {
+    const client = await pool.connect();
+    try {
+      return await client.query(text, params);
+    } finally {
+      client.release();
+    }
+  };
+} else {
+  const Database = require('better-sqlite3');
+  const db = new Database('sangam.db');
+
+  query = async (text, params = []) => {
+    // Basic conversion of Postgres syntax $1, $2 to SQLite ?, ?
+    let sqliteText = text.replace(/\$\d+/g, '?');
+
+    // Convert 'CURRENT_DATE::TEXT' to 'CURRENT_DATE'
+    sqliteText = sqliteText.replace(/CURRENT_DATE::TEXT/gi, "CURRENT_DATE");
+
+    // SQLite Schema conversions
+    sqliteText = sqliteText.replace(/SERIAL PRIMARY KEY/gi, 'INTEGER PRIMARY KEY AUTOINCREMENT');
+    sqliteText = sqliteText.replace(/TIMESTAMP DEFAULT NOW\(\)/gi, 'DATETIME DEFAULT CURRENT_TIMESTAMP');
+
+    try {
+      if (sqliteText.trim().toUpperCase().startsWith('SELECT') || sqliteText.trim().toUpperCase().startsWith('WITH') || sqliteText.toUpperCase().includes('RETURNING')) {
+        const rows = db.prepare(sqliteText).all(...params);
+        return { rows, rowCount: rows.length };
+      } else {
+        // For multiple DDL statements without params, db.exec must be used in better-sqlite3
+        if (params.length === 0 && sqliteText.includes(';')) {
+          db.exec(sqliteText);
+          return { rows: [], rowCount: 0 };
+        } else {
+          const info = db.prepare(sqliteText).run(...params);
+          return { rows: [], rowCount: info.changes };
+        }
+      }
+    } catch (err) {
+      throw new Error(err.message + ' \nQuery failed: ' + sqliteText.slice(0, 200));
+    }
+  };
 }
 
 async function initDb() {
@@ -69,6 +106,22 @@ async function initDb() {
     );
 
   `);
+
+  // Safe column migrations for existing databases (add missing columns if not present)
+  // SQLite doesn't support IF NOT EXISTS in ADD COLUMN, so we rely on the catch block to ignore duplicates
+  const migrations = [
+    `ALTER TABLE users ADD COLUMN avatar_url TEXT`,
+    `ALTER TABLE users ADD COLUMN two_factor_enabled BOOLEAN DEFAULT FALSE`,
+    `ALTER TABLE users ADD COLUMN total_deposited NUMERIC DEFAULT 0`,
+    `ALTER TABLE users ADD COLUMN interest_earned NUMERIC DEFAULT 0`,
+    `ALTER TABLE users ADD COLUMN borrowed_amount NUMERIC DEFAULT 0`,
+    `ALTER TABLE users ADD COLUMN next_payment_date TEXT`,
+    `ALTER TABLE users ADD COLUMN trust_score INTEGER DEFAULT 750`,
+    `ALTER TABLE users ADD COLUMN balance NUMERIC DEFAULT 0`,
+  ];
+  for (const sql of migrations) {
+    await query(sql).catch((e) => console.warn('Migration skipped:', e.message));
+  }
 
   // Seed primary admin user if not exists
   const bcrypt = require('bcryptjs');
